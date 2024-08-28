@@ -14,7 +14,13 @@ class CollectionUpdate(BaseModel):
 class CollectionResponse(BaseSchema):
     name: str
     description: Optional[str] = None
-    requests: List[RequestResponse]
+    requests: Optional[List[RequestResponse]] = None
 
+    class Config:
+        orm_mode = True
+
+class Collction_Response(BaseSchema):
+    name: str
+    description: Optional[str] = None
     class Config:
         orm_mode = True

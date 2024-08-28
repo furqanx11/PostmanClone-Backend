@@ -40,8 +40,24 @@ class RequestResponse(BaseSchema):
     method: str
     url: str
     saved_at: Optional[datetime] = None
-    parameters: List[ParameterResponse]
-    responses: List[ResponseResponse]
+    parameters: Optional[List[ParameterResponse]] = None
+    responses: Optional[List[ResponseResponse]] = None
+
+    @validator('collection_id')
+    def validate_collection_id(cls, v):
+        if not isinstance(v, int):
+            raise ValueError('collection_id must be an integer')
+        return v
+
+    class Config:
+        orm_mode = True
+
+class Request_Response(BaseSchema):
+    collection_id: int
+    name: str
+    method: str
+    url: str
+    saved_at: Optional[datetime] = None
 
     @validator('collection_id')
     def validate_collection_id(cls, v):

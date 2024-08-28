@@ -16,10 +16,9 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-
 register_tortoise(
     app,
-    db_url= "postgres://username:password@localhost:5432/dbname",
+    db_url= settings.DATABASE_URL,
     modules={'models': ['app.models']},
     generate_schemas=True,
     add_exception_handlers=True,

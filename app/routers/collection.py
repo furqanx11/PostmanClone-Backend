@@ -1,10 +1,10 @@
 from app.crud.crud import CRUD
-from app.schemas.collection_schema import CollectionCreate, CollectionResponse, CollectionUpdate
+from app.schemas.collection_schema import CollectionCreate, Collction_Response, CollectionUpdate
 from app.routers.routes import routes
-from app.models import Collection, Request, Response, Parameter
-from tortoise.contrib.pydantic import pydantic_model_creator
+from app.models import Collection,Collection_Pydantic, Request, Request_Pydantic, Response, Response_Pydantic, Parameter, Parameter_Pydantic
 
-coll = CRUD(Collection)
+coll = CRUD(Collection, Collection_Pydantic)
+
 
 router = routes(
     create_func=coll.create,
@@ -12,7 +12,7 @@ router = routes(
     update_func=coll.update,
     delete_func=coll.delete,
     create_schema=CollectionCreate,
-    response_schema=CollectionResponse,
+    response_schema=Collction_Response,
     update_schema=CollectionUpdate
 )
 
@@ -27,11 +27,6 @@ router = routes(
 #         collection_dict['requests'] = await Request.filter(collection_id=collection.id).all()
 #         result.append(collection_dict)
 #     return result
-
-Collection_Pydantic = pydantic_model_creator(Collection, name="Collection")
-Request_Pydantic = pydantic_model_creator(Request, name="Request")
-Response_Pydantic = pydantic_model_creator(Response, name="Response")
-Parameter_Pydantic = pydantic_model_creator(Parameter, name="Parameter")
 
 async def get_all_collections():
     collections = await coll.get_all_collections_with_nested()

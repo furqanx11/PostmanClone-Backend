@@ -1,9 +1,9 @@
 from app.crud.crud import CRUD
 from app.schemas.parameter_schema import ParameterCreate, ParameterResponse, ParameterUpdate
 from app.routers.routes import routes
-from app.models import Parameter
+from app.models import Parameter, Parameter_Pydantic
 
-param = CRUD(Parameter)
+param = CRUD(Parameter, Parameter_Pydantic)
 
 router = routes(
     create_func=param.create,
