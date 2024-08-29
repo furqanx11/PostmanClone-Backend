@@ -1,7 +1,7 @@
 from pydantic import BaseModel, validator
 from typing import Optional
 from app.schemas.schema import BaseSchema
-from app.exceptions import CustomValidationException
+from app.exceptions.custom_exceptions import CustomValidationException, custom_validation_exception_handler
 
 class ParameterCreate(BaseModel):
     request_id: int

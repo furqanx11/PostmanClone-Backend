@@ -1,6 +1,7 @@
 from pydantic import BaseModel, validator
 from typing import Optional
 from app.schemas.schema import BaseSchema
+from app.exceptions.custom_exceptions import CustomValidationException
 
 class ResponseCreate(BaseModel):
     request_id: int
@@ -12,7 +13,7 @@ class ResponseCreate(BaseModel):
     @validator('request_id', pre = True)
     def validate_request_id(cls, v):
         if not isinstance(v, int):
-            raise ValueError('request_id must be an integer')
+            raise CustomValidationException(status_code=422, detail='request_id must be an integer')
         return v
 
 class ResponseUpdate(BaseModel):
@@ -25,7 +26,7 @@ class ResponseUpdate(BaseModel):
     @validator('request_id')
     def validate_request_id(cls, v):
         if not isinstance(v, int):
-            raise ValueError('request_id must be an integer')
+            raise CustomValidationException(status_code=422, detail='request_id must be an integer')
         return v
 
 class ResponseResponse(BaseSchema):
@@ -38,5 +39,5 @@ class ResponseResponse(BaseSchema):
     @validator('request_id')
     def validate_request_id(cls, v):
         if not isinstance(v, int):
-            raise ValueError('request_id must be an integer')
+            raise CustomValidationException(status_code=422, detail='request_id must be an integer')
         return v

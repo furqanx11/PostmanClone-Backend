@@ -36,18 +36,8 @@ class Response(BaseModel):
     response_time = fields.FloatField()
     response_size = fields.IntField()
 
-Collection_Pydantic = pydantic_model_creator(
-    Collection,
-    name="Collection",
-    exclude=("requests",)
-)
 
-# Exclude 'parameters' and 'responses' fields from Request_Pydantic
-Request_Pydantic = pydantic_model_creator(
-    Request,
-    name="Request",
-    exclude=("parameters", "responses")
-)
-
+Collection_Pydantic = pydantic_model_creator(Collection, name="Collection")
+Request_Pydantic = pydantic_model_creator(Request, name="Request")
 Parameter_Pydantic = pydantic_model_creator(Parameter, name="Parameter")
 Response_Pydantic = pydantic_model_creator(Response, name="Response")
