@@ -1,7 +1,5 @@
-app/__pycache__/
+**/__pycache__/
 app/check.py
 data
 migrations
 docker-compose.yml
-app/schemas/__pycache__/
-app/routes/__pycache__/

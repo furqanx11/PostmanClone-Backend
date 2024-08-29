@@ -2,7 +2,6 @@ from typing import Type, TypeVar, Dict, Any, Optional, List
 from tortoise.models import Model
 from tortoise.exceptions import DoesNotExist
 from app.models import Collection
-from tortoise.fields.relational import BackwardFKRelation, ForeignKeyField
 TModel = TypeVar("TModel", bound=Model)
 
 class CRUD():
