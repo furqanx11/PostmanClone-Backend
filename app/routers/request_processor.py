@@ -13,15 +13,17 @@ def set_cookie(response: Response, key: str, value: str, max_age: int = 3600):
 async def send_request(
     request: ProcessRequest,
     response: Response,
-    example_cookie: Optional[str] = Cookie(None)  
+    example_cookie: Optional[str] = Cookie(None)
 ):
     try:
+        query_params = request.data.get("query_param", {})
+        
         async with httpx.AsyncClient() as client:
             start_time = time.time()
             res = await client.request(
                 method=request.method,
                 url=request.url,
-                params=request.params,
+                params=query_params, 
                 json=request.data,
                 headers=request.headers,
                 cookies=request.cookies
@@ -39,7 +41,7 @@ async def send_request(
             "response_size": response_size,
             "cookies": dict(res.cookies),
             "json": res.json() if res.headers.get("Content-Type") == "application/json" else res.text,
-            "received_cookies": example_cookie,  
+            "received_cookies": example_cookie,
             "headers": dict(res.headers)
         }
     except httpx.RequestError as e:

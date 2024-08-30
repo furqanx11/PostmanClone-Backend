@@ -36,7 +36,18 @@ class Response(BaseModel):
     response_time = fields.FloatField()
     response_size = fields.IntField()
 
+class User(BaseModel):
+    username = fields.CharField(max_length=50, unique=True)
+    email = fields.CharField(max_length=100, unique=True)
+    hashed_password = fields.CharField(max_length=128)
+    is_active = fields.BooleanField(default=True)
+    is_superuser = fields.BooleanField(default=False)
 
+    class PydanticMeta:
+        exclude = ["hashed_password"]
+
+User_Pydantic = pydantic_model_creator(User, name="User")
+UserIn_Pydantic = pydantic_model_creator(User, name="UserIn", exclude_readonly=True)
 Collection_Pydantic = pydantic_model_creator(Collection, name="Collection")
 Request_Pydantic = pydantic_model_creator(Request, name="Request")
 Parameter_Pydantic = pydantic_model_creator(Parameter, name="Parameter")
