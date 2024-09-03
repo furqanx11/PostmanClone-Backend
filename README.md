@@ -7,7 +7,6 @@ PostmanClone-Backend is a FastAPI-based backend application designed to manage c
 - [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Usage](#usage)
 
 ## Features
 
