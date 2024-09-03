@@ -17,7 +17,7 @@ class CRUD():
     async def get(self, id: int) -> Optional[Dict[str, Any]]:
         item = await self.model.filter(id=id).values()
         if not item:
-            raise CustomValidationException(status_code=422, detail=f"{self.model.__name__} with id {id} does not exist.")
+            raise CustomValidationException(status_code=404, detail=f"{self.model.__name__} with id {id} does not exist.")
         
         return item[0]
     
@@ -30,11 +30,16 @@ class CRUD():
 
         item = await self.model.filter(id=id).first()
         if item is None:
-            raise CustomValidationException(status_code=422, detail=f"{self.model.__name__} with id {id} does not exist.")
+            raise CustomValidationException(status_code=404, detail=f"{self.model.__name__} with id {id} does not exist.")
         return item
 
     async def delete(self, id: int) -> None:
+        item = await self.model.filter(id=id).values()
+        if not item:
+            raise CustomValidationException(status_code=204)
+
         await self.model.filter(id=id).delete()
+        return {"detail": "Item deleted successfully"}
     
     async def get_all_collections_with_nested(self) -> List[Collection]:
         collections = await Collection.all().prefetch_related('requests__parameters', 'requests__responses')

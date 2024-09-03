@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter, HTTPException
 from typing import Type, TypeVar, Callable
 from pydantic import BaseModel, ValidationError
+from app.exceptions.custom_exceptions import CustomValidationException
 
 TCreateSchema = TypeVar("TCreateSchema", bound=BaseModel)
 TResponseSchema = TypeVar("TResponseSchema", bound=BaseModel)
@@ -46,10 +47,10 @@ def routes(
         
     @router.delete("/{id}", response_model=None)
     async def delete(id: str):
-        item_to_delete = await get_func(id)
-        if not item_to_delete:
-            raise HTTPException(status_code=404, detail="Item not found")
-        await delete_func(id)
-        return {"detail": "Item deleted successfully"}
+        # item_to_delete = await get_func(id)
+        # if not item_to_delete:
+        #     raise CustomValidationException(status_code=204, detail="Item does not exist.")
+        return await delete_func(id)
+        #return {"detail": "Item deleted successfully"}
 
     return router
