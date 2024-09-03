@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Response, Cookie
+from fastapi import APIRouter, Response, Cookie
 import httpx
 from typing import Optional
 import time
 from app.schemas.process_request_schema import ProcessRequest
+from app.exceptions.custom_exceptions import CustomValidationException
 
 router = APIRouter()
 
@@ -16,7 +17,7 @@ async def send_request(
     example_cookie: Optional[str] = Cookie(None)
 ):
     try:
-        query_params = request.data.get("query_param", {})
+        query_params = request.data.get("query_param", {}) if request.data else {}
         
         async with httpx.AsyncClient() as client:
             start_time = time.time()
@@ -45,4 +46,4 @@ async def send_request(
             "headers": dict(res.headers)
         }
     except httpx.RequestError as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred while making the request: {e}")
+        raise CustomValidationException(status_code=500, detail=f"An error occurred while making the request: {e}")

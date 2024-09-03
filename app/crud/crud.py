@@ -1,6 +1,6 @@
 from typing import Type, TypeVar, Dict, Any, Optional, List
 from tortoise.models import Model
-from tortoise.exceptions import DoesNotExist
+from app.exceptions.custom_exceptions import CustomValidationException
 from app.models import Collection
 TModel = TypeVar("TModel", bound=Model)
 
@@ -17,20 +17,20 @@ class CRUD():
     async def get(self, id: int) -> Optional[Dict[str, Any]]:
         item = await self.model.filter(id=id).values()
         if not item:
-            raise DoesNotExist(f"{self.model.__name__} with id {id} does not exist.")
+            raise CustomValidationException(status_code=422, detail=f"{self.model.__name__} with id {id} does not exist.")
         
         return item[0]
     
     async def update(self, id: int, item_data: Dict[str, Any]) -> Optional[TModel]:
         update_data = {k: v for k, v in item_data.items() if v is not None}
         if not update_data:
-            raise ValueError("No valid fields provided for update.")
+            raise CustomValidationException(status_code=400, detail="No valid fields provided for update.")
 
         await self.model.filter(id=id).update(**update_data)
 
         item = await self.model.filter(id=id).first()
         if item is None:
-            raise DoesNotExist(f"{self.model.__name__} with id {id} does not exist.")
+            raise CustomValidationException(status_code=422, detail=f"{self.model.__name__} with id {id} does not exist.")
         return item
 
     async def delete(self, id: int) -> None:
