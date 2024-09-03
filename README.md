@@ -53,5 +53,4 @@ PostmanClone-Backend is a FastAPI-based backend application designed to manage c
 Create a `.env` file in the root directory and add the following environment variables:
 
 ```env
-SECRET_KEY=your_secret_key
 DATABASE_URL=sqlite://db.sqlite3
