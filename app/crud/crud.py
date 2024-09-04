@@ -39,12 +39,7 @@ class CRUD():
         return item
 
     async def delete(self, id: int) -> None:
-        item = await self.model.filter(id=id).values()
-        if not item:
-            raise CustomValidationException(status_code=204)
-
         await self.model.filter(id=id).delete()
-        return {"detail": "Item deleted successfully"}
     
     async def get_all_collections_with_nested(self) -> List[Collection]:
         collections = await Collection.all().prefetch_related('requests__parameters', 'requests__responses')

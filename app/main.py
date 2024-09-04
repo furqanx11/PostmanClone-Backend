@@ -4,7 +4,6 @@ from app.routers.api_router import router
 from app.middleware.cors import cors_middleware
 from app.exceptions import CustomValidationException
 from app.db import init, close
-#from app.exceptions.custom_exceptions import custom_validation_exception_handler
 from app.exceptions.custom_exceptions import custom_validation_exception_handler, validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 

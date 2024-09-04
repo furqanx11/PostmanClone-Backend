@@ -16,17 +16,6 @@ router = routes(
     update_schema=CollectionUpdate
 )
 
-# Collection_Pydantic = pydantic_model_creator(Collection, name="Collection")
-
-# async def get_all_collections():
-#     collections = await coll.get_all_collections_with_nested()
-#     result = {}
-#     for collection in collections:
-#         collection_pydantic = await Collection_Pydantic.from_tortoise_orm(collection)
-#         collection_dict = collection_pydantic.dict()  # Convert Pydantic model to dictionary
-#         collection_dict['requests'] = await Request.filter(collection_id=collection.id).all()
-#         result.append(collection_dict)
-#     return result
 
 async def get_all_collections():
     collections = await coll.get_all_collections_with_nested()
