@@ -11,8 +11,13 @@ class CRUD():
 
         
     async def create(self, item_data: Dict[str, Any]) -> TModel:
-        item = await self.model.create(**item_data)
-        return item
+        try:
+            item = await self.model.create(**item_data)
+            if not item:
+                raise CustomValidationException(status_code=400, detail="Item not created.", pre = True)
+            return item
+        except Exception as e:
+            raise CustomValidationException(status_code=400, detail=str(e))
 
     async def get(self, id: int) -> Optional[Dict[str, Any]]:
         item = await self.model.filter(id=id).values()

@@ -22,8 +22,13 @@ def routes(
 
     @router.post("/", response_model=response_schema)
     async def create(item: create_schema):
-        item = await create_func(item.dict())
-        return item    
+        try:
+            item = await create_func(item.dict())
+            if not item:
+                raise CustomValidationException(status_code=400, detail="Item not created.", pre = True)
+            return item    
+        except ValidationError as e:
+            raise CustomValidationException(status_code=400, detail=str(e))
 
     @router.get("/{id}", response_model=response_schema)
     async def read(id: str):
