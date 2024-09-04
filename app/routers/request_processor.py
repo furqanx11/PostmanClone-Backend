@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response, Cookie
+from fastapi import APIRouter, Response, Cookie, status
 import httpx
 from typing import Optional
 import time
@@ -10,7 +10,7 @@ router = APIRouter()
 def set_cookie(response: Response, key: str, value: str, max_age: int = 3600):
     response.set_cookie(key=key, value=value, max_age=max_age, httponly=True)
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def send_request(
     request: ProcessRequest,
     response: Response,

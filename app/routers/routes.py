@@ -1,8 +1,7 @@
-import datetime
-import logging
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from typing import Type, TypeVar, Callable
 from pydantic import BaseModel, ValidationError
+from app.exceptions.custom_exceptions import Custom201Response
 from app.exceptions.custom_exceptions import CustomValidationException
 
 TCreateSchema = TypeVar("TCreateSchema", bound=BaseModel)
@@ -20,13 +19,13 @@ def routes(
 ) -> APIRouter:
     router = APIRouter() 
 
-    @router.post("/", response_model=response_schema)
+    @router.post("/", response_model=response_schema, status_code=status.HTTP_201_CREATED)
     async def create(item: create_schema):
         try:
             item = await create_func(item.dict())
             if not item:
                 raise CustomValidationException(status_code=400, detail="Item not created.", pre = True)
-            return item    
+            return item
         except ValidationError as e:
             raise CustomValidationException(status_code=400, detail=str(e))
 
@@ -47,7 +46,6 @@ def routes(
                 raise HTTPException(status_code=404, detail="Item not found")
             return updated_item
         except ValidationError as e:
-            logging.error(f"Validation error: {e}")
             raise HTTPException(status_code=422, detail=str(e))
         
     @router.delete("/{id}", response_model=None)
