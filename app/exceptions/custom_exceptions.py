@@ -11,6 +11,10 @@ class CustomValidationException(Exception):
         self.detail = detail
 
 async def custom_validation_exception_handler(request: Request, exc: CustomValidationException):
+    if exc.detail is None:
+        return Response(
+            status_code=exc.status_code
+        )
     if exc.status_code == 201:
         return Response(
             status_code=exc.status_code

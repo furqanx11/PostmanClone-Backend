@@ -36,12 +36,18 @@ async def send_request(
         
         set_cookie(response, "example_cookie", "abc")
 
+        # Check if the response content is JSON
+        try:
+            response_json = res.json()
+        except ValueError:
+            response_json = None
+
         return {
             "status_code": res.status_code,
             "response_time": response_time,
             "response_size": response_size,
             "cookies": dict(res.cookies),
-            "json": res.json() if res.headers.get("Content-Type") == "application/json" else res.text,
+            "json": response_json if response_json is not None else res.text,
             "received_cookies": example_cookie,
             "headers": dict(res.headers)
         }
